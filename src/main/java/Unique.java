@@ -9,5 +9,9 @@ public class Unique {
 
     public HashMap<String, Photo> getAll() {return this.hashMap;}
 
-    public void add(String hash, Photo photo) {this.hashMap.put(hash, photo);}
+    public void add(Photo photo) {
+        String hash = photo.getHash();
+        this.hashMap.put(hash, photo);}
+
+    public boolean isExists(String hash) {return this.hashMap.containsKey(hash);}
 }

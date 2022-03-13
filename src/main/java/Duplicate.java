@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+
 public class Duplicate {
 
     ArrayList<Photo> arrayList;
