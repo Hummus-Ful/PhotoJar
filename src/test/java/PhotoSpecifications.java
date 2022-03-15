@@ -3,15 +3,27 @@ import org.junit.Test;
 import org.junit.Before;
 import java.io.File;
 import java.io.IOException;
-import static org.mockito.Mockito.*;
 import org.junit.rules.TemporaryFolder;
 import static org.junit.Assert.assertEquals;
 
 
 public class PhotoSpecifications {
 
+    File tempFile;
+    String path;
+    String hash;
+    Photo photo;
+
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
+
+    @Before
+    public void setup() throws IOException {
+        tempFile = temporaryFolder.newFile("photo.png");
+        path = tempFile.getPath();
+        hash = "d41d8cd98f00b204e9800998ecf8427e";
+        photo = new Photo(path);
+    }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionIfNoPathIsProvidedToConstructor() {
@@ -19,25 +31,24 @@ public class PhotoSpecifications {
     }
 
     @Test
-    public void shouldCreateNewPhotoObjectUsingConstructor() throws IOException {
-        File tempFile = temporaryFolder.newFile("photo.png");
-        String path = tempFile.getPath();
-        Photo photo = new Photo(path);
+    public void shouldCreateNewPhotoObjectUsingConstructor() {
         assertEquals(photo.getClass(), Photo.class);
     }
 
     @Test
-    public void shouldReturnCalculatedPhotoHash() throws IOException {
-        File tempFile = temporaryFolder.newFile("photo.png");
-        String path = tempFile.getPath();
-        String hash = "d41d8cd98f00b204e9800998ecf8427e";
-        Photo photo = new Photo(path);
+    public void shouldReturnCalculatedPhotoHash() {
         String returnedHash = photo.getHash();
         assertEquals(hash, returnedHash);
     }
 
+    @Test
+    public void shouldReturnPhotoPath() {
+        String returnedPath = photo.getPath();
+        assertEquals(path, returnedPath);
+    }
+
     @Test(expected = IOException.class)
-    public void shouldThrowExceptionForNonExistingFile() throws IOException{
+    public void shouldThrowExceptionForNonExistingFile() throws IOException {
         String path = "/this/file/does/not/exists.png";
         Photo photo = new Photo(path);
     }

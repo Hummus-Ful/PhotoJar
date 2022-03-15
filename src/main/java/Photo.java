@@ -9,6 +9,10 @@ public class Photo {
     private String path;
     private String hash;
 
+    private void setPath(String path) {
+        this.path = path;
+    }
+
     private void setHash() throws IOException {
         File file = new File(this.path);
         String calculatedHash = DigestUtils.md5Hex(FileUtils.readFileToByteArray(file));
@@ -20,12 +24,16 @@ public class Photo {
     }
 
     public Photo(String path) throws IOException {
-        this.path = path;
+        setPath(path);
         setHash();
     }
 
     public String getHash() {
         return this.hash;
+    }
+
+    public String getPath() {
+        return this.path;
     }
 
 }
