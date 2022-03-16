@@ -67,4 +67,15 @@ public class UniqueSpecifications {
         String hash = "ThisHashDoesNotExistsInUnique";
         assertFalse(unique.isExists(hash));
     }
+
+    @Test
+    public void shouldReturnPhotoObjectForGivenHash() throws IOException {
+        File tempFile = temporaryFolder.newFile("photo.png");
+        String path = tempFile.getPath();
+        String hash = "d41d8cd98f00b204e9800998ecf8427e";
+        Photo photo = new Photo(path);
+        unique.add(photo);
+        Photo returnedPhoto = unique.getPhoto(hash);
+        assertEquals(photo, returnedPhoto);
+    }
 }
