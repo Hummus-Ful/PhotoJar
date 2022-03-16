@@ -14,4 +14,8 @@ public class Unique {
         this.hashMap.put(hash, photo);}
 
     public boolean isExists(String hash) {return this.hashMap.containsKey(hash);}
+
+    public Photo getPhoto(String hash) {
+        return this.hashMap.get(hash);
+    }
 }
