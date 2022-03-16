@@ -3,37 +3,40 @@ import java.util.ArrayList;
 
 public class PhotoJar {
 
-    public static void main(String[] args) throws IOException {
+
+    public static void main(String[] args) {
         if (args.length != 1) throw new IllegalArgumentException();
         String rootDir = args[0];
 
         Scan scan = new Scan(rootDir);
-        ArrayList<Photo> photos = scan.getAllPhotos();
+        try {
+            ArrayList<Photo> photos = scan.getAllPhotos();
+            Duplicate duplicate = new Duplicate();
+            Unique unique = new Unique();
 
-        Duplicate duplicate = new Duplicate();
-        Unique unique = new Unique();
-
-        for (Photo photo : photos) {
-            if (unique.isExists(photo.getHash())) {
-                System.out.println("Duplicated hash:" + photo.getHash());
-                duplicate.add(photo);
+            for (Photo photo : photos) {
+                String hash = photo.getHash();
+                if (unique.isExists(hash)) {
+                    String originalPhotoPath = unique.getPhoto(hash).getPath() ;
+                    String duplicatePhotoPath = photo.getPath();
+                    System.out.println("Duplicated hash:" + hash +
+                            " Original: " + originalPhotoPath +
+                            " photojar.Duplicate: " + duplicatePhotoPath);
+                    duplicate.add(photo);
+                }
+                else unique.add(photo);
             }
-            else unique.add(photo);
-        }
 
-        ArrayList<Photo> duplicatedPhotos = duplicate.getAll();
-        //TODO: move all dups to a seperated folder
+            ArrayList<Photo> duplicatedPhotos = duplicate.getAll();
+            //TODO: move all dups to a seperated folder
+        }
+        catch (Exception e) {}
     }
 
 }
     //TODO:
     /*
-    1. Create new Scan object called scan
-    2. scan.getAllPhotos() -> return ArrayList<Photo> into photos object
-    3. Create new Dup and Unique objects
-    4. for each object in photos:
-        a. if(unique.isExists(photo)) -> insert into dup
-        b. else insert into unique
-    5. Move all dups into recycleBin folder
+    1. Move all dups into recycleBin folder
+    2. Handle exception
     */
 
