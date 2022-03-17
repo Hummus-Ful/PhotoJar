@@ -7,6 +7,10 @@ import java.util.logging.SimpleFormatter;
 
 public class PhotoJar {
 
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_RESET = "\u001B[0m";
+
     public static void main(String[] args) {
         Logger logger = Logger.getLogger(PhotoJar.class.getName());
         FileHandler handler;
@@ -32,8 +36,8 @@ public class PhotoJar {
                     String originalPhotoPath = unique.getPhotoWithKey(checksum).getPath() ;
                     String duplicatePhotoPath = photo.getPath();
                     logger.info("Duplicated checksum: " + checksum +
-                            " Original: " + originalPhotoPath +
-                            " Duplicate: " + duplicatePhotoPath);
+                            " Original: " + ANSI_GREEN + originalPhotoPath + ANSI_RESET +
+                            " Duplicate: " + ANSI_RED + duplicatePhotoPath + ANSI_RESET);
                     duplicate.add(photo);
                 }
                 else unique.add(photo);
