@@ -10,12 +10,12 @@ public class Unique {
     public HashMap<String, Photo> getAll() {return this.hashMap;}
 
     public void add(Photo photo) {
-        String hash = photo.getHash();
+        String hash = photo.getChecksum();
         this.hashMap.put(hash, photo);}
 
-    public boolean isExists(String hash) {return this.hashMap.containsKey(hash);}
+    public boolean isKeyExists(String hash) {return this.hashMap.containsKey(hash);}
 
-    public Photo getPhoto(String hash) {
+    public Photo getPhotoWithKey(String hash) {
         return this.hashMap.get(hash);
     }
 }

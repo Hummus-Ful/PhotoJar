@@ -27,11 +27,11 @@ public class PhotoJar {
             Unique unique = new Unique();
 
             for (Photo photo : photos) {
-                String hash = photo.getHash();
-                if (unique.isExists(hash)) {
-                    String originalPhotoPath = unique.getPhoto(hash).getPath() ;
+                String checksum = photo.getChecksum();
+                if (unique.isKeyExists(checksum)) {
+                    String originalPhotoPath = unique.getPhotoWithKey(checksum).getPath() ;
                     String duplicatePhotoPath = photo.getPath();
-                    logger.info("Duplicated hash:" + hash +
+                    logger.info("Duplicated checksum: " + checksum +
                             " Original: " + originalPhotoPath +
                             " Duplicate: " + duplicatePhotoPath);
                     duplicate.add(photo);

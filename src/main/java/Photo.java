@@ -28,7 +28,7 @@ public class Photo {
         setHash();
     }
 
-    public String getHash() {
+    public String getChecksum() {
         return this.hash;
     }
 

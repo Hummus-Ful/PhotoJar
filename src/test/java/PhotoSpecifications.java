@@ -11,7 +11,7 @@ public class PhotoSpecifications {
 
     File tempFile;
     String path;
-    String hash;
+    String checksum;
     Photo photo;
 
     @Rule
@@ -21,7 +21,7 @@ public class PhotoSpecifications {
     public void setup() throws IOException {
         tempFile = temporaryFolder.newFile("photo.png");
         path = tempFile.getPath();
-        hash = "d41d8cd98f00b204e9800998ecf8427e";
+        checksum = "d41d8cd98f00b204e9800998ecf8427e";
         photo = new Photo(path);
     }
 
@@ -37,8 +37,8 @@ public class PhotoSpecifications {
 
     @Test
     public void shouldReturnCalculatedPhotoHash() {
-        String returnedHash = photo.getHash();
-        assertEquals(hash, returnedHash);
+        String returnedChecksum = photo.getChecksum();
+        assertEquals(checksum, returnedChecksum);
     }
 
     @Test

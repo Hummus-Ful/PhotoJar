@@ -42,13 +42,13 @@ public class UniqueSpecifications {
     public void shouldReturnHashMapWithAllEntries() throws IOException {
         File tempFile = temporaryFolder.newFile("photo.png");
         String path = tempFile.getPath();
-        String hash = "d41d8cd98f00b204e9800998ecf8427e";
+        String checksum = "d41d8cd98f00b204e9800998ecf8427e";
         Photo photo = new Photo(path);
         unique.add(photo);
         HashMap<String, Photo> entries = unique.getAll();
         Collection<String> keys = entries.keySet();
         Collection<Photo> values = entries.values();
-        assertTrue(keys.contains(hash));
+        assertTrue(keys.contains(checksum));
         assertTrue(values.contains(photo));
     }
 
@@ -56,26 +56,26 @@ public class UniqueSpecifications {
     public void shouldReturnTrueIfEntryAlreadyExists() throws IOException {
         File tempFile = temporaryFolder.newFile("photo.png");
         String path = tempFile.getPath();
-        String hash = "d41d8cd98f00b204e9800998ecf8427e";
+        String checksum = "d41d8cd98f00b204e9800998ecf8427e";
         Photo photo = new Photo(path);
         unique.add(photo);
-        assertTrue(unique.isExists(hash));
+        assertTrue(unique.isKeyExists(checksum));
     }
 
     @Test
     public void shouldReturnFalseIfEntryDoesNotExists() {
-        String hash = "ThisHashDoesNotExistsInUnique";
-        assertFalse(unique.isExists(hash));
+        String checksum = "ThisHashDoesNotExistsInUnique";
+        assertFalse(unique.isKeyExists(checksum));
     }
 
     @Test
     public void shouldReturnPhotoObjectForGivenHash() throws IOException {
         File tempFile = temporaryFolder.newFile("photo.png");
         String path = tempFile.getPath();
-        String hash = "d41d8cd98f00b204e9800998ecf8427e";
+        String checksum = "d41d8cd98f00b204e9800998ecf8427e";
         Photo photo = new Photo(path);
         unique.add(photo);
-        Photo returnedPhoto = unique.getPhoto(hash);
+        Photo returnedPhoto = unique.getPhotoWithKey(checksum);
         assertEquals(photo, returnedPhoto);
     }
 }
