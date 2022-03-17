@@ -1,10 +1,22 @@
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.FileHandler;
+import java.util.logging.SimpleFormatter;
+
 
 public class PhotoJar {
 
-
     public static void main(String[] args) {
+        Logger logger = Logger.getLogger(PhotoJar.class.getName());
+        FileHandler handler;
+        try {
+            handler = new FileHandler("photojar.log");
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
+        }
+        catch (Exception e) {}
+
         if (args.length != 1) throw new IllegalArgumentException();
         String rootDir = args[0];
 
@@ -19,9 +31,9 @@ public class PhotoJar {
                 if (unique.isExists(hash)) {
                     String originalPhotoPath = unique.getPhoto(hash).getPath() ;
                     String duplicatePhotoPath = photo.getPath();
-                    System.out.println("Duplicated hash:" + hash +
+                    logger.info("Duplicated hash:" + hash +
                             " Original: " + originalPhotoPath +
-                            " photojar.Duplicate: " + duplicatePhotoPath);
+                            " Duplicate: " + duplicatePhotoPath);
                     duplicate.add(photo);
                 }
                 else unique.add(photo);
