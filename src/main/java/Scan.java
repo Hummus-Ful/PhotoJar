@@ -6,8 +6,8 @@ import org.apache.commons.io.FileUtils;
 
 public class Scan {
 
-    private final String[] ext = {"png", "jpg", "jpeg", "tiff", "raw",
-                                  "PNG", "JPG", "JPEG", "TIFF", "RAW"};
+    private final String[] ext = {"png", "jpg", "jpeg", "tiff", "raw", "nef",
+                                  "PNG", "JPG", "JPEG", "TIFF", "RAW", "NEF"};
     private final String path;
     private final ArrayList<Photo> photos = new ArrayList<>();
     private ArrayList<File> files = new ArrayList<>();

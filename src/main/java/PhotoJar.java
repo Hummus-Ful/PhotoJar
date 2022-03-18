@@ -43,7 +43,9 @@ public class PhotoJar {
                 else unique.add(photo);
             }
 
-            ArrayList<Photo> duplicatedPhotos = duplicate.getAll();
+            int numberOfDuplicates = duplicate.getAll().size();
+            logger.info("FOUND TOTAL OF " + numberOfDuplicates + " DUPLICATES");
+            //ArrayList<Photo> duplicatedPhotos = duplicate.getAll();
             //TODO: move all dups to a seperated folder
         }
         catch (Exception e) {}
