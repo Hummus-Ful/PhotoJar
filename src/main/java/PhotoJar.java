@@ -1,22 +1,21 @@
 import java.util.ArrayList;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.FileHandler;
 import java.util.logging.SimpleFormatter;
+import dev.brachtendorf.jimagehash.hash.Hash;
 
 
 public class PhotoJar {
 
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_RESET = "\u001B[0m";
+    private static String logFileName = "photojar.log";
 
     public static void main(String[] args) {
         Logger logger = Logger.getLogger(PhotoJar.class.getName());
         FileHandler handler;
         try {
-            handler = new FileHandler("photojar.log");
+            handler = new FileHandler(logFileName);
             handler.setFormatter(new SimpleFormatter());
+            logger.setUseParentHandlers(false);  // disable console output
             logger.addHandler(handler);
         }
         catch (Exception e) {}
@@ -24,20 +23,22 @@ public class PhotoJar {
         if (args.length != 1) throw new IllegalArgumentException();
         String rootDir = args[0];
 
+        System.out.println("Starting a scan...");
         Scan scan = new Scan(rootDir);
         try {
             ArrayList<Photo> photos = scan.getAllPhotos();
+            logger.info("FOUND TOTAL OF " + photos.size() + " PHOTOS");
             Duplicate duplicate = new Duplicate();
             Unique unique = new Unique();
 
             for (Photo photo : photos) {
-                String checksum = photo.getChecksum();
+                Hash checksum = photo.getChecksum();
                 if (unique.isKeyExists(checksum)) {
                     String originalPhotoPath = unique.getPhotoWithKey(checksum).getPath() ;
                     String duplicatePhotoPath = photo.getPath();
                     logger.info("Duplicated checksum: " + checksum +
-                            " Original: " + ANSI_GREEN + originalPhotoPath + ANSI_RESET +
-                            " Duplicate: " + ANSI_RED + duplicatePhotoPath + ANSI_RESET);
+                            " Original: " + originalPhotoPath +
+                            " Duplicate: " + duplicatePhotoPath);
                     duplicate.add(photo);
                 }
                 else unique.add(photo);
@@ -45,7 +46,10 @@ public class PhotoJar {
 
             int numberOfDuplicates = duplicate.getAll().size();
             logger.info("FOUND TOTAL OF " + numberOfDuplicates + " DUPLICATES");
-            //ArrayList<Photo> duplicatedPhotos = duplicate.getAll();
+            System.out.println("Found total of " + numberOfDuplicates + " duplicates");
+            System.out.println("List of originals and duplicates are stored in " + logFileName);
+            System.out.println("Done!");
+
             //TODO: move all dups to a seperated folder
         }
         catch (Exception e) {}

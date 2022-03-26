@@ -15,6 +15,7 @@ public class Scan {
     private void scanDir() {
         File rootDir = new File(this.path);
         files = (ArrayList<File>) FileUtils.listFiles(rootDir, ext, true);
+        System.out.println("Found total of " + files.size() + " files with relevant extension");
     }
 
     public Scan(String path) {
@@ -23,6 +24,7 @@ public class Scan {
     }
 
     public ArrayList<Photo> getAllPhotos() throws IOException {
+        System.out.println("Converting files to Photo objects and calculating hashes");
         // Convert ArrayList<Files> to ArrayList<Photo>
         for (File file : files) {
             Photo photo = new Photo(file.getPath());
