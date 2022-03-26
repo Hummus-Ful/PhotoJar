@@ -24,7 +24,7 @@ public class Scan {
     }
 
     public ArrayList<Photo> getAllPhotos() throws IOException {
-        System.out.println("Converting files to Photo objects and calculating hashes");
+        System.out.println("Converting files to 'Photo' objects and calculating hashes, might take a while...");
         // Convert ArrayList<Files> to ArrayList<Photo>
         for (File file : files) {
             Photo photo = new Photo(file.getPath());

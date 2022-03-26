@@ -23,7 +23,7 @@ public class PhotoJar {
         if (args.length != 1) throw new IllegalArgumentException();
         String rootDir = args[0];
 
-        System.out.println("Starting a scan...");
+        System.out.println("Starting a scan");
         Scan scan = new Scan(rootDir);
         try {
             ArrayList<Photo> photos = scan.getAllPhotos();
@@ -47,7 +47,7 @@ public class PhotoJar {
             int numberOfDuplicates = duplicate.getAll().size();
             logger.info("FOUND TOTAL OF " + numberOfDuplicates + " DUPLICATES");
             System.out.println("Found total of " + numberOfDuplicates + " duplicates");
-            System.out.println("List of originals and duplicates are stored in " + logFileName);
+            System.out.println("List of originals and duplicates is stored in '" + logFileName + "'");
             System.out.println("Done!");
 
             //TODO: move all dups to a seperated folder
