@@ -1,22 +1,32 @@
+import java.util.ArrayList;
 import java.util.TreeMap;
 import java.math.BigInteger;
 
 
 public class PhotoJar {
 
-    private TreeMap<BigInteger, Photo> treeMap;
+    private TreeMap<BigInteger, ArrayList<Photo>> treeMap;
 
-    public PhotoJar() {this.treeMap = new TreeMap<>();}
+    public PhotoJar() {treeMap = new TreeMap<>();}
 
-    public TreeMap<BigInteger, Photo> getAll() {return this.treeMap;}
+    public TreeMap<BigInteger, ArrayList<Photo>> getAll() {return treeMap;}
 
-    public void add(Photo photo) {
-        BigInteger hashValue = photo.getHashValue();
-        this.treeMap.put(hashValue, photo);}
+    public void add(Photo newPhoto) {
+        BigInteger hashValue = newPhoto.getHashValue();
+        ArrayList<Photo> photos;
+        if (isKeyExists(hashValue)) {
+            photos = treeMap.get(hashValue);
+        }
+        else {
+            photos = new ArrayList<>();
+        }
+        photos.add(newPhoto);
+        treeMap.put(hashValue, photos);
+    }
 
-    public boolean isKeyExists(BigInteger hashValue) {return this.treeMap.containsKey(hashValue);}
+    public boolean isKeyExists(BigInteger hashValue) {return treeMap.containsKey(hashValue);}
 
-    public Photo getPhotoWithKey(BigInteger hashValue) {
-        return this.treeMap.get(hashValue);
+    public ArrayList<Photo> getPhotosWithHash(BigInteger hashValue) {
+        return treeMap.get(hashValue);
     }
 }
