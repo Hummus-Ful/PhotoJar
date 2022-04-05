@@ -29,7 +29,7 @@ dependencies {
 jar {
     manifest {
         attributes(
-                'Main-Class': 'PhotoJar'
+                'Main-Class': 'Main'
         )
     }
     // Include gradle dependencies in jar file
