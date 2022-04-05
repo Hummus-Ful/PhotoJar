@@ -9,13 +9,11 @@ import static org.junit.Assert.assertTrue;
 
 public class ScanSpecifications {
 
-    private String emptyDirectory;
     private String directoryWithPhotos;
     private String directoryWithNoPhotos;
 
     @Before
     public void setup() {
-        emptyDirectory = "src/test/resources/empty";
         directoryWithPhotos = "src/test/resources/photos";
         directoryWithNoPhotos = "src/test/resources/directoryWithNoPhotos";
     }
@@ -24,13 +22,6 @@ public class ScanSpecifications {
     public void shouldCreateNewObjectUsingConstructor() {
         Scan scan = new Scan(directoryWithPhotos);
         assertEquals(Scan.class, scan.getClass());
-    }
-
-    @Test
-    public void shouldReturnEmptyArrayListOfPhotosIfPathIsHasNoPhotos() throws IOException {
-        Scan scan = new Scan(emptyDirectory);
-        ArrayList<Photo> photos = scan.getAllPhotos();
-        assertTrue(photos.isEmpty());
     }
 
     @Test
