@@ -1,3 +1,4 @@
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.FileHandler;
@@ -32,11 +33,11 @@ public class PhotoJar {
             Unique unique = new Unique();
 
             for (Photo photo : photos) {
-                Hash checksum = photo.getChecksum();
-                if (unique.isKeyExists(checksum)) {
-                    String originalPhotoPath = unique.getPhotoWithKey(checksum).getPath() ;
+                BigInteger hashValue = photo.getHashValue();
+                if (unique.isKeyExists(hashValue)) {
+                    String originalPhotoPath = unique.getPhotoWithKey(hashValue).getPath() ;
                     String duplicatePhotoPath = photo.getPath();
-                    logger.info("Duplicated checksum: " + checksum +
+                    logger.info("Duplicated hash: " + hashValue +
                             " Original: " + originalPhotoPath +
                             " Duplicate: " + duplicatePhotoPath);
                     duplicate.add(photo);

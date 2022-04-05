@@ -1,23 +1,24 @@
 import dev.brachtendorf.jimagehash.hash.Hash;
 
-import java.util.HashMap;
+import java.math.BigInteger;
+import java.util.TreeMap;
 
 
 public class Unique {
 
-    private HashMap<Hash, Photo> hashMap;
+    private TreeMap<BigInteger, Photo> treeMap;
 
-    public Unique() {this.hashMap = new HashMap<>();}
+    public Unique() {this.treeMap = new TreeMap<>();}
 
-    public HashMap<Hash, Photo> getAll() {return this.hashMap;}
+    public TreeMap<BigInteger, Photo> getAll() {return this.treeMap;}
 
     public void add(Photo photo) {
-        Hash hash = photo.getChecksum();
-        this.hashMap.put(hash, photo);}
+        BigInteger hashValue = photo.getHashValue();
+        this.treeMap.put(hashValue, photo);}
 
-    public boolean isKeyExists(Hash hash) {return this.hashMap.containsKey(hash);}
+    public boolean isKeyExists(BigInteger hashValue) {return this.treeMap.containsKey(hashValue);}
 
-    public Photo getPhotoWithKey(Hash hash) {
-        return this.hashMap.get(hash);
+    public Photo getPhotoWithKey(BigInteger hashValue) {
+        return this.treeMap.get(hashValue);
     }
 }

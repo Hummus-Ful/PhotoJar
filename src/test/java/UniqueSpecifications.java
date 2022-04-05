@@ -2,7 +2,7 @@ import org.junit.Test;
 import org.junit.Before;
 import java.io.File;
 import java.math.BigInteger;
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.io.IOException;
 import java.util.Collection;
 import static org.junit.Assert.assertTrue;
@@ -16,7 +16,7 @@ public class UniqueSpecifications {
     private Unique unique;
     private File tempFile;
     private String path;
-    private Hash checksum;
+    private BigInteger hashValue;
     private Photo photo;
 
     @Before
@@ -24,7 +24,7 @@ public class UniqueSpecifications {
         unique = new Unique();
         tempFile = new File("src/test/resources/photos/Small_Robin_by_Chris-Smith.jpg");
         path = tempFile.getPath();
-        checksum = new Hash(new BigInteger("52023094704"), 36, 89877222);
+        hashValue = new BigInteger("52023094704");
         photo = new Photo(path);
     }
 
@@ -43,29 +43,29 @@ public class UniqueSpecifications {
     @Test
     public void shouldReturnHashMapWithAllEntries() {
         unique.add(photo);
-        HashMap<Hash, Photo> entries = unique.getAll();
-        Collection<Hash> keys = entries.keySet();
+        TreeMap<BigInteger, Photo> entries = unique.getAll();
+        Collection<BigInteger> keys = entries.keySet();
         Collection<Photo> values = entries.values();
-        assertTrue(keys.contains(checksum));
+        assertTrue(keys.contains(hashValue));
         assertTrue(values.contains(photo));
     }
 
     @Test
     public void shouldReturnTrueIfEntryAlreadyExists() {
         unique.add(photo);
-        assertTrue(unique.isKeyExists(checksum));
+        assertTrue(unique.isKeyExists(hashValue));
     }
 
     @Test
     public void shouldReturnFalseIfEntryDoesNotExists() {
-        Hash checksumDummy = new Hash(new BigInteger("0"), 0, 0);
-        assertFalse(unique.isKeyExists(checksumDummy));
+        BigInteger dummyHashValue = new BigInteger("0");
+        assertFalse(unique.isKeyExists(dummyHashValue));
     }
 
     @Test
     public void shouldReturnPhotoObjectForGivenHash() {
         unique.add(photo);
-        Photo returnedPhoto = unique.getPhotoWithKey(checksum);
+        Photo returnedPhoto = unique.getPhotoWithKey(hashValue);
         assertEquals(photo, returnedPhoto);
     }
 }

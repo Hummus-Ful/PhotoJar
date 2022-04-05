@@ -5,26 +5,20 @@ import java.io.IOException;
 import java.math.BigInteger;
 import static org.junit.Assert.assertEquals;
 import dev.brachtendorf.jimagehash.hash.Hash;
-//import dev.brachtendorf.jimagehash.hashAlgorithms.AverageHash;
-//import dev.brachtendorf.jimagehash.hashAlgorithms.HashingAlgorithm;
 
 
 public class PhotoSpecifications {
 
     private File tempFile;
     private String path;
-    private Hash checksum;
+    private Hash hash;
     private Photo photo;
-    //private int keyLength = 32;
-    //private HashingAlgorithm hashingAlgorithm = new AverageHash(keyLength);
 
     @Before
     public void setup() throws IOException {
         tempFile = new File("src/test/resources/photos/Small_Robin_by_Chris-Smith.jpg");
         path = tempFile.getPath();
-        // Using hardcoded checksum as it takes 50% less time instead of recalculating it.
-        //checksum = hashingAlgorithm.hash(tempFile);
-        checksum = new Hash(new BigInteger("52023094704"), 36, 89877222);
+        hash = new Hash(new BigInteger("52023094704"), 36, 89877222);
         photo = new Photo(path);
     }
 
@@ -40,8 +34,8 @@ public class PhotoSpecifications {
 
     @Test
     public void shouldReturnCalculatedPhotoHash() {
-        Hash returnedChecksum = photo.getChecksum();
-        assertEquals(checksum, returnedChecksum);
+        Hash returnedChecksum = photo.getHash();
+        assertEquals(hash, returnedChecksum);
     }
 
     @Test

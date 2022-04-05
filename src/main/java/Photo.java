@@ -1,16 +1,16 @@
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import dev.brachtendorf.jimagehash.hash.Hash;
 import dev.brachtendorf.jimagehash.hashAlgorithms.AverageHash;
 import dev.brachtendorf.jimagehash.hashAlgorithms.HashingAlgorithm;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.codec.digest.DigestUtils;
 
 
 public class Photo {
 
     private String path;
     private Hash hash;
+    private BigInteger hashValue;
     HashingAlgorithm hashingAlgorithm;
     int keyLength = 32;
 
@@ -20,10 +20,13 @@ public class Photo {
 
     private void setHash() throws IOException {
         File file = new File(this.path);
-        //String calculatedHash = DigestUtils.md5Hex(FileUtils.readFileToByteArray(file));
         hashingAlgorithm = new AverageHash(keyLength);
         Hash calculatedHash = hashingAlgorithm.hash(file);
         this.hash = calculatedHash;
+    }
+
+    private void setHashValue() {
+        this.hashValue = hash.getHashValue();
     }
 
     public Photo() {
@@ -33,10 +36,15 @@ public class Photo {
     public Photo(String path) throws IOException {
         setPath(path);
         setHash();
+        setHashValue();
     }
 
-    public Hash getChecksum() {
+    public Hash getHash() {
         return this.hash;
+    }
+
+    public BigInteger getHashValue() {
+        return this.hashValue;
     }
 
     public String getPath() {
