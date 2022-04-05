@@ -18,6 +18,7 @@ public class PhotoSpecifications {
     public void setup() throws IOException {
         tempFile = new File("src/test/resources/photos/Small_Robin_by_Chris-Smith.jpg");
         path = tempFile.getPath();
+        // Using hardcoded checksum as it takes 50% less time instead of recalculating it.
         hash = new Hash(new BigInteger("12979489063543234784"), 64, 89938726);
         photo = new Photo(path);
     }
