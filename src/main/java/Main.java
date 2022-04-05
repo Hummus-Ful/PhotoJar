@@ -29,19 +29,19 @@ public class Main {
             ArrayList<Photo> photos = scan.getAllPhotos();
             logger.info("FOUND TOTAL OF " + photos.size() + " PHOTOS");
             Duplicate duplicate = new Duplicate();
-            Unique unique = new Unique();
+            PhotoJar photoJar = new PhotoJar();
 
             for (Photo photo : photos) {
                 BigInteger hashValue = photo.getHashValue();
-                if (unique.isKeyExists(hashValue)) {
-                    String originalPhotoPath = unique.getPhotoWithKey(hashValue).getPath() ;
+                if (photoJar.isKeyExists(hashValue)) {
+                    String originalPhotoPath = photoJar.getPhotoWithKey(hashValue).getPath() ;
                     String duplicatePhotoPath = photo.getPath();
                     logger.info("Duplicated hash: " + hashValue +
                             " Original: " + originalPhotoPath +
                             " Duplicate: " + duplicatePhotoPath);
                     duplicate.add(photo);
                 }
-                else unique.add(photo);
+                else photoJar.add(photo);
             }
 
             int numberOfDuplicates = duplicate.getAll().size();

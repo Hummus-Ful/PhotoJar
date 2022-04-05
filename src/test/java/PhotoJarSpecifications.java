@@ -8,12 +8,11 @@ import java.util.Collection;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
-import dev.brachtendorf.jimagehash.hash.Hash;
 
 
-public class UniqueSpecifications {
+public class PhotoJarSpecifications {
 
-    private Unique unique;
+    private PhotoJar photoJar;
     private File tempFile;
     private String path;
     private BigInteger hashValue;
@@ -21,7 +20,7 @@ public class UniqueSpecifications {
 
     @Before
     public void setup() throws IOException {
-        unique = new Unique();
+        photoJar = new PhotoJar();
         tempFile = new File("src/test/resources/photos/Small_Robin_by_Chris-Smith.jpg");
         path = tempFile.getPath();
         hashValue = new BigInteger("52023094704");
@@ -30,20 +29,20 @@ public class UniqueSpecifications {
 
     @Test
     public void shouldCreateNewEmptyObject() {
-        assertTrue(unique.getAll().isEmpty());
+        assertTrue(photoJar.getAll().isEmpty());
     }
 
     @Test
     public void shouldAddNewEntry() {
-        unique.add(photo);
-        int numberOfEntries = unique.getAll().size();
+        photoJar.add(photo);
+        int numberOfEntries = photoJar.getAll().size();
         assertEquals(1, numberOfEntries);
     }
 
     @Test
     public void shouldReturnHashMapWithAllEntries() {
-        unique.add(photo);
-        TreeMap<BigInteger, Photo> entries = unique.getAll();
+        photoJar.add(photo);
+        TreeMap<BigInteger, Photo> entries = photoJar.getAll();
         Collection<BigInteger> keys = entries.keySet();
         Collection<Photo> values = entries.values();
         assertTrue(keys.contains(hashValue));
@@ -52,20 +51,20 @@ public class UniqueSpecifications {
 
     @Test
     public void shouldReturnTrueIfEntryAlreadyExists() {
-        unique.add(photo);
-        assertTrue(unique.isKeyExists(hashValue));
+        photoJar.add(photo);
+        assertTrue(photoJar.isKeyExists(hashValue));
     }
 
     @Test
     public void shouldReturnFalseIfEntryDoesNotExists() {
         BigInteger dummyHashValue = new BigInteger("0");
-        assertFalse(unique.isKeyExists(dummyHashValue));
+        assertFalse(photoJar.isKeyExists(dummyHashValue));
     }
 
     @Test
     public void shouldReturnPhotoObjectForGivenHash() {
-        unique.add(photo);
-        Photo returnedPhoto = unique.getPhotoWithKey(hashValue);
+        photoJar.add(photo);
+        Photo returnedPhoto = photoJar.getPhotoWithKey(hashValue);
         assertEquals(photo, returnedPhoto);
     }
 }
