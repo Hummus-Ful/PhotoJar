@@ -11,7 +11,7 @@ public class PhotoSpecifications {
 
     private File tempFile;
     private String path;
-    private Hash checksum;
+    private Hash hash;
     private Photo photo;
 
     @Before
@@ -19,7 +19,7 @@ public class PhotoSpecifications {
         tempFile = new File("src/test/resources/photos/Small_Robin_by_Chris-Smith.jpg");
         path = tempFile.getPath();
         // Using hardcoded checksum as it takes 50% less time instead of recalculating it.
-        checksum = new Hash(new BigInteger("52023094704"), 36, 89877222);
+        hash = new Hash(new BigInteger("12979489063543234784"), 64, 89938726);
         photo = new Photo(path);
     }
 
@@ -35,8 +35,8 @@ public class PhotoSpecifications {
 
     @Test
     public void shouldReturnCalculatedPhotoHash() {
-        Hash returnedChecksum = photo.getChecksum();
-        assertEquals(checksum, returnedChecksum);
+        Hash returnedChecksum = photo.getHash();
+        assertEquals(hash, returnedChecksum);
     }
 
     @Test
