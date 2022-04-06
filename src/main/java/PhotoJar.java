@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.TreeMap;
 import java.math.BigInteger;
 
@@ -28,5 +29,16 @@ public class PhotoJar {
 
     public ArrayList<Photo> getPhotosWithHash(BigInteger hashValue) {
         return treeMap.get(hashValue);
+    }
+
+    public ArrayList<Photo> getDuplicates() {
+        ArrayList<Photo> duplicates = new ArrayList<>();
+        for (Map.Entry<BigInteger, ArrayList<Photo>> entry: treeMap.entrySet()) {
+            ArrayList<Photo> photos = entry.getValue();
+            if (photos.size() > 1) {
+                duplicates.addAll(photos);
+            }
+        }
+        return duplicates;
     }
 }

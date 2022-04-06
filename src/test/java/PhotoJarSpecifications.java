@@ -89,4 +89,25 @@ public class PhotoJarSpecifications {
         Photo returnedPhoto = photoJar.getPhotosWithHash(hashValue).get(0);
         assertEquals(photo, returnedPhoto);
     }
+
+    @Test
+    public void shouldReturnEmptyArrayListIfNoDuplicatesWereFound() throws IOException {
+        Photo anotherPhoto = new Photo("src/test/resources/photos/Large_Robin_by_abdul-rehman-khalid.jpg");
+        photoJar.add(photo);
+        photoJar.add(anotherPhoto);
+        int numberOfDuplicates = photoJar.getDuplicates().size();
+        assertEquals(0, numberOfDuplicates);
+    }
+
+    @Test
+    public void shouldReturnArrayListWithTwoDuplicatedPhotos() throws IOException {
+        Photo anotherPhoto = new Photo("src/test/resources/photos/Small_Robin_by_Chris-Smith.jpg");
+        photoJar.add(photo);
+        photoJar.add(anotherPhoto);
+        ArrayList<Photo> expectedArrayListDuplicates = new ArrayList<>();
+        expectedArrayListDuplicates.add(photo);
+        expectedArrayListDuplicates.add(anotherPhoto);
+        ArrayList<Photo> duplicates = photoJar.getDuplicates();
+        assertEquals(expectedArrayListDuplicates, duplicates);
+    }
 }
