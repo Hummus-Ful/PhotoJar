@@ -41,34 +41,22 @@ public class PhotoJarSpecifications {
     }
 
     @Test
-    public void shouldAddEntriesUnderTheSameHash() throws IOException {
-        Photo samePhoto = new Photo("src/test/resources/photos/Small_Robin_by_Chris-Smith.jpg");
-        photoJar.add(photo);
-        photoJar.add(samePhoto);
-        int numberOfEntriesUnderSameKey = photoJar.getPhotosWithHash(hashValue).size();
-        assertEquals(2, numberOfEntriesUnderSameKey);
-    }
-
-    @Test
     public void shouldAddEntriesUnderDifferentHashes() throws IOException {
         Photo differentPhoto = new Photo("src/test/resources/photos/Large_Robin_by_Chris-Smith.jpg");
         photoJar.add(photo);
         photoJar.add(differentPhoto);
-        int numberOfEntriesUnderSameKey = photoJar.getPhotosWithHash(hashValue).size();
         int numberOfTotalEntries = photoJar.getAll().size();
-        assertEquals(1, numberOfEntriesUnderSameKey);
         assertEquals(2, numberOfTotalEntries);
     }
 
     @Test
     public void shouldReturnHashMapWithAllEntries() {
         photoJar.add(photo);
-        TreeMap<BigInteger, ArrayList<Photo>> entries = photoJar.getAll();
+        TreeMap<BigInteger, Photo> entries = photoJar.getAll();
         Collection<BigInteger> keys = entries.keySet();
-        Collection<ArrayList<Photo>> values = entries.values();
+        Collection<Photo> values = entries.values();
         assertTrue(keys.contains(hashValue));
-        //TODO: Need to be fixed as I changed from Photo to ArrayList<Photo>
-        // assertTrue(values.contains(photo));
+        assertTrue(values.contains(photo));
     }
 
     @Test
@@ -86,7 +74,7 @@ public class PhotoJarSpecifications {
     @Test
     public void shouldReturnPhotoObjectForGivenHash() {
         photoJar.add(photo);
-        Photo returnedPhoto = photoJar.getPhotosWithHash(hashValue).get(0);
+        Photo returnedPhoto = photoJar.getPhotoWithHash(hashValue);
         assertEquals(photo, returnedPhoto);
     }
 
@@ -100,14 +88,16 @@ public class PhotoJarSpecifications {
     }
 
     @Test
-    public void shouldReturnArrayListWithTwoDuplicatedPhotos() throws IOException {
+    public void shouldReturnArrayListWithOneDuplicatedPhoto() throws IOException {
         Photo anotherPhoto = new Photo("src/test/resources/photos/Small_Robin_by_Chris-Smith.jpg");
         photoJar.add(photo);
         photoJar.add(anotherPhoto);
-        ArrayList<Photo> expectedArrayListDuplicates = new ArrayList<>();
-        expectedArrayListDuplicates.add(photo);
-        expectedArrayListDuplicates.add(anotherPhoto);
-        ArrayList<Photo> duplicates = photoJar.getDuplicates();
-        assertEquals(expectedArrayListDuplicates, duplicates);
+        int numberOfDuplicates = photoJar.getDuplicates().size();
+        assertEquals(1, numberOfDuplicates);
     }
+
+    //TODO:
+    // Implement getSimilar method
+    // Implement deleteDuplicatesAndSimilar (should I split this? MUST keep the order to delete dups first)
+    //
 }

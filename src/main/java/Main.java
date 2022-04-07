@@ -55,7 +55,7 @@ public class Main {
     private static void logAllDuplicates() {
         ArrayList<Photo> duplicates = photoJar.getDuplicates();
         for (Photo photo: duplicates)
-            logger.info("Potential Duplicate: " + photo.getHashValue() + ", Path: " + photo.getPath());
+            logger.info("Duplicate: " + photo.getHashValue() + ", Path: " + photo.getPath());
             //logger.info("Potential Duplicate: " + photo.getHashValue() + ", Path: file://" + photo.getPath());
     }
 
@@ -67,7 +67,6 @@ public class Main {
         getAllPhotos();
         populatePhotoJar();
         logAllDuplicates();
-        //logger.info(photoJar.getAll().toString());
         System.out.println("Done!");
     }
 }
