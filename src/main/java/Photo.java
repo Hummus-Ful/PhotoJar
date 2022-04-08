@@ -12,7 +12,7 @@ public class Photo {
     private Hash hash;
     private BigInteger hashValue;
     HashingAlgorithm hashingAlgorithm;
-    int keyLength = 64;
+    int keyLength = 128;
 
     private void setPath(String path) {
         this.path = path;

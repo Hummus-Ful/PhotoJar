@@ -1,8 +1,6 @@
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.FileHandler;
 import java.util.logging.SimpleFormatter;
@@ -53,12 +51,17 @@ public class Main {
     }
 
     private static void logAllDuplicates() {
-        TreeMap<BigInteger, ArrayList<Photo>> treeMap = photoJar.getAll();
-        for (Map.Entry<BigInteger, ArrayList<Photo>> entry: treeMap.entrySet()) {
-            ArrayList<Photo> photos = entry.getValue();
-            if (photos.size() > 1) {
-                logger.info("Hash: " + entry.getKey() + ", Photos: " + photos.toString());
-            }
+        ArrayList<Photo> duplicates = photoJar.getDuplicates();
+        for (Photo photo: duplicates)
+            logger.info("Duplicate: " + photo.getHashValue() + ", Path: " + photo.getPath());
+            //logger.info("Potential Duplicate: " + photo.getHashValue() + ", Path: file://" + photo.getPath());
+    }
+
+    private static void logAllSimilar(double maxDistance) {
+        HashMap<String, String> similar = photoJar.getSimilar(maxDistance);
+        for (Map.Entry<String, String > entry: similar.entrySet()) {
+            logger.info("Similar: " + entry.getKey() + " -> " + entry.getValue());
+            //logger.info("Similar: file://" + entry.getKey() + " -> file://" + entry.getValue());
         }
     }
 
@@ -70,7 +73,8 @@ public class Main {
         getAllPhotos();
         populatePhotoJar();
         logAllDuplicates();
-        //logger.info(photoJar.getAll().toString());
+        double prePopulatedMaxDistance = 0.05;
+        logAllSimilar(prePopulatedMaxDistance);
         System.out.println("Done!");
     }
 }
