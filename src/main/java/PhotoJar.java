@@ -1,6 +1,6 @@
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
+import dev.brachtendorf.jimagehash.hash.Hash;
+
+import java.util.*;
 import java.math.BigInteger;
 
 
@@ -38,5 +38,19 @@ public class PhotoJar {
 
     public ArrayList<Photo> getDuplicates() {
         return duplicates;
+    }
+
+    public HashMap<String, String > getSimilar(double maxDistance) {
+        ArrayList<Photo> photos = new ArrayList<>(treeMap.values());
+        HashMap<String, String> similar = new HashMap<>();
+        for (int iterator = 0; iterator < (photos.size()-1); iterator++) {
+            Photo photoA = photos.get(iterator);
+            Photo photoB = photos.get(iterator+1);
+            double distanceBetweenPhotos = photoA.getHash().normalizedHammingDistance(photoB.getHash());
+            if (distanceBetweenPhotos < maxDistance) {
+                similar.put(photoA.getPath(), photoB.getPath());
+            }
+        }
+        return similar;
     }
 }

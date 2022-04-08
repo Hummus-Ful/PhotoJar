@@ -1,6 +1,5 @@
 import org.junit.Test;
 import org.junit.Before;
-import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import static org.junit.Assert.assertEquals;
@@ -9,17 +8,15 @@ import dev.brachtendorf.jimagehash.hash.Hash;
 
 public class PhotoSpecifications {
 
-    private File tempFile;
     private String path;
     private Hash hash;
     private Photo photo;
 
     @Before
     public void setup() throws IOException {
-        tempFile = new File("src/test/resources/photos/Small_Robin_by_Chris-Smith.jpg");
-        path = tempFile.getPath();
+        path = "src/test/resources/photos/Small_Robin_by_Chris-Smith.jpg";
         // Using hardcoded checksum as it takes 50% less time instead of recalculating it.
-        hash = new Hash(new BigInteger("12979489063543234784"), 64, 89938726);
+        hash = new Hash(new BigInteger("3255819928745283004853448844850788827905"), 128, 90031943);
         photo = new Photo(path);
     }
 

@@ -1,10 +1,9 @@
 import org.junit.Test;
 import org.junit.Before;
-import java.io.File;
-import java.math.BigInteger;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.TreeMap;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Collection;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
@@ -14,7 +13,6 @@ import static org.junit.Assert.assertEquals;
 public class PhotoJarSpecifications {
 
     private PhotoJar photoJar;
-    private File tempFile;
     private String path;
     private BigInteger hashValue;
     private Photo photo;
@@ -22,9 +20,8 @@ public class PhotoJarSpecifications {
     @Before
     public void setup() throws IOException {
         photoJar = new PhotoJar();
-        tempFile = new File("src/test/resources/photos/Small_Robin_by_Chris-Smith.jpg");
-        path = tempFile.getPath();
-        hashValue = new BigInteger("12979489063543234784");
+        path = "src/test/resources/photos/Small_Robin_by_Chris-Smith.jpg";
+        hashValue = new BigInteger("3255819928745283004853448844850788827905");
         photo = new Photo(path);
     }
 
@@ -96,8 +93,22 @@ public class PhotoJarSpecifications {
         assertEquals(1, numberOfDuplicates);
     }
 
+    @Test
+    public void shouldReturnHashMapOfVerySimilarPhotos() throws IOException {
+        Photo similarPhoto = new Photo("src/test/resources/photos/Large_Robin_by_Chris-Smith.jpg");
+        Photo robinPhoto = new Photo("src/test/resources/photos/Small_Robin_by_abdul-rehman-khalid.jpg");
+        Photo similarRobinPhoto = new Photo("src/test/resources/photos/Large_Robin_by_abdul-rehman-khalid.jpg");
+        photoJar.add(photo);
+        photoJar.add(similarPhoto);
+        photoJar.add(robinPhoto);
+        photoJar.add(similarRobinPhoto);
+        double similarityMaxDistance = 0.05;
+        HashMap<String, String> similarMap = photoJar.getSimilar(similarityMaxDistance);
+        int numberOfSimilarPairs = similarMap.size();
+        assertEquals(2, numberOfSimilarPairs);
+    }
+
     //TODO:
-    // Implement getSimilar method
     // Implement deleteDuplicatesAndSimilar (should I split this? MUST keep the order to delete dups first)
-    //
+    // Need to check which photo is larger and store the HashMap Accordingly (largeImage : smallImage)...
 }

@@ -1,8 +1,6 @@
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.FileHandler;
 import java.util.logging.SimpleFormatter;
@@ -59,6 +57,14 @@ public class Main {
             //logger.info("Potential Duplicate: " + photo.getHashValue() + ", Path: file://" + photo.getPath());
     }
 
+    private static void logAllSimilar(double maxDistance) {
+        HashMap<String, String> similar = photoJar.getSimilar(maxDistance);
+        for (Map.Entry<String, String > entry: similar.entrySet()) {
+            logger.info("Similar: " + entry.getKey() + " -> " + entry.getValue());
+            //logger.info("Similar: file://" + entry.getKey() + " -> file://" + entry.getValue());
+        }
+    }
+
     public static void main(String[] args) {
 
         setLogger();
@@ -67,6 +73,8 @@ public class Main {
         getAllPhotos();
         populatePhotoJar();
         logAllDuplicates();
+        double prePopulatedMaxDistance = 0.05;
+        logAllSimilar(prePopulatedMaxDistance);
         System.out.println("Done!");
     }
 }
