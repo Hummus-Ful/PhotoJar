@@ -48,9 +48,14 @@ public class PhotoJar {
             Photo photoB = photos.get(iterator+1);
             double distanceBetweenPhotos = photoA.getHash().normalizedHammingDistance(photoB.getHash());
             if (distanceBetweenPhotos < maxDistance) {
-                similar.put(photoA.getPath(), photoB.getPath());
+                // ensure the bigger photo is saved as Map key
+                if (photoA.getFileSize() > photoB.getFileSize()) similar.put(photoA.getPath(), photoB.getPath());
+                else similar.put(photoB.getPath(), photoA.getPath());
             }
         }
         return similar;
     }
 }
+
+//TODO:
+// split the getSimilar method into smaller private methods
