@@ -108,7 +108,14 @@ public class PhotoJarSpecifications {
         assertEquals(2, numberOfSimilarPairs);
     }
 
-    //TODO:
-    // Implement deleteDuplicatesAndSimilar (should I split this? MUST keep the order to delete dups first)
-    // Need to check which photo is larger and store the HashMap Accordingly (largeImage : smallImage)...
+    @Test
+    public void shouldReturnBiggerPhotoAsMapKeyAndSmallerAsValue() throws IOException {
+        Photo biggerPhoto = new Photo("src/test/resources/photos/Large_Robin_by_Chris-Smith.jpg");
+        photoJar.add(photo);
+        photoJar.add(biggerPhoto);
+        double similarityMaxDistance = 0.05;
+        HashMap<String, String> similarMap = photoJar.getSimilar(similarityMaxDistance);
+        boolean biggerPhotoIsTheKey = similarMap.containsKey(biggerPhoto.getPath());
+        assertTrue(biggerPhotoIsTheKey);
+    }
 }

@@ -47,4 +47,10 @@ public class PhotoSpecifications {
         String path = "/this/file/does/not/exists.png";
         Photo photoDoesNotExists = new Photo(path);
     }
+
+    @Test
+    public void shouldReturnFileSizeInBytes() {
+        long fileSize = photo.getFileSize();
+        assertEquals(86950, fileSize);
+    }
 }

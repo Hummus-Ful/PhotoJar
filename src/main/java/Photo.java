@@ -8,18 +8,19 @@ import dev.brachtendorf.jimagehash.hashAlgorithms.HashingAlgorithm;
 
 public class Photo {
 
+    private File file;
     private String path;
     private Hash hash;
+    private long fileSize;
     private BigInteger hashValue;
-    HashingAlgorithm hashingAlgorithm;
-    int keyLength = 128;
+    private HashingAlgorithm hashingAlgorithm;
+    private int keyLength = 128;
 
     private void setPath(String path) {
         this.path = path;
     }
 
     private void setHash() throws IOException {
-        File file = new File(this.path);
         hashingAlgorithm = new AverageHash(keyLength);
         Hash calculatedHash = hashingAlgorithm.hash(file);
         this.hash = calculatedHash;
@@ -29,26 +30,36 @@ public class Photo {
         this.hashValue = hash.getHashValue();
     }
 
+    private void setFileSize() {
+        fileSize = file.length();
+    }
+
     public Photo() {
         throw new IllegalArgumentException();
     }
 
     public Photo(String path) throws IOException {
         setPath(path);
+        file = new File(this.path);
         setHash();
         setHashValue();
+        setFileSize();
     }
 
     public Hash getHash() {
-        return this.hash;
+        return hash;
     }
 
     public BigInteger getHashValue() {
-        return this.hashValue;
+        return hashValue;
     }
 
     public String getPath() {
-        return this.path;
+        return path;
+    }
+
+    public long getFileSize() {
+        return fileSize;
     }
 
     @Override
