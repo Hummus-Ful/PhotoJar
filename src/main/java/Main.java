@@ -1,9 +1,16 @@
+import java.io.Writer;
+import java.io.FileWriter;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.FileHandler;
 import java.util.logging.SimpleFormatter;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 
 public class Main {
@@ -13,6 +20,7 @@ public class Main {
     private static String rootDir;
     private static ArrayList<Photo> photos;
     private static PhotoJar photoJar;
+    private static HashMap<String, String> similar;
 
 
     private static void setLogger() {
@@ -24,7 +32,9 @@ public class Main {
             logger.setUseParentHandlers(false);  // disable console output
             logger.addHandler(handler);
         }
-        catch (Exception e) {}
+        catch (Exception e) {
+            //TODO
+        }
     }
 
     private static void checkArgs(String[] args) {
@@ -58,10 +68,32 @@ public class Main {
     }
 
     private static void logAllSimilar(double maxDistance) {
-        HashMap<String, String> similar = photoJar.getSimilar(maxDistance);
+        similar = photoJar.getSimilar(maxDistance);
         for (Map.Entry<String, String > entry: similar.entrySet()) {
             logger.info("Similar: " + entry.getKey() + " -> " + entry.getValue());
             //logger.info("Similar: file://" + entry.getKey() + " -> file://" + entry.getValue());
+        }
+    }
+
+    private static void createHtmlOutput() {
+        VelocityEngine velocityEngine = new VelocityEngine();
+        velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+        velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+        velocityEngine.init();
+
+        VelocityContext velocityContext = new VelocityContext();
+        velocityContext.put("similar", similar);
+
+        Template template = velocityEngine.getTemplate("index.vm");
+
+        try {
+            Writer writer = new FileWriter("index.html");
+            template.merge(velocityContext, writer);
+            writer.flush();
+            writer.close();
+        }
+        catch (Exception e) {
+            //TODO
         }
     }
 
@@ -75,6 +107,7 @@ public class Main {
         logAllDuplicates();
         double prePopulatedMaxDistance = 0.05;
         logAllSimilar(prePopulatedMaxDistance);
+        createHtmlOutput();
         System.out.println("Done!");
     }
 }
