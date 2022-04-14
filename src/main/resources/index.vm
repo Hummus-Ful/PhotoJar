@@ -1,0 +1,41 @@
+<html>
+<style>
+        table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+        }
+
+        td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+        }
+
+        th {
+                text-align: center;
+        }
+
+        td img {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+
+        }
+</style>
+<head>
+        <title>PhotoJar</title>
+</head>
+<body>
+        <h1>Similar Photos</h1>
+<table>
+        <tr>
+                <th>KEY</th>
+                <th>VALUE</th>
+        </tr>
+        #foreach( $key in $similar.keySet())
+                <tr><td><img src="$key"></td><td><img src="$similar.get($key)"></td></tr>
+                <tr><td>$key</td><td>$similar.get($key)</td></tr>
+        #end
+</table>
+</body></html>
