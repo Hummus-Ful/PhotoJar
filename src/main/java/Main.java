@@ -64,15 +64,15 @@ public class Main {
     private static void logAllDuplicates() {
         ArrayList<Photo> duplicates = photoJar.getDuplicates();
         for (Photo photo: duplicates)
-            logger.info("Duplicate: " + photo.getHashValue() + ", Path: " + photo.getPath());
-            //logger.info("Potential Duplicate: " + photo.getHashValue() + ", Path: file://" + photo.getPath());
+            logger.info(photo.getPath());
+            //logger.info("Duplicate: " + photo.getHashValue() + ", Path: " + photo.getPath());
     }
 
     private static void logAllSimilar(double maxDistance) {
         similar = photoJar.getSimilar(maxDistance);
         for (Map.Entry<String, String > entry: similar.entrySet()) {
-            logger.info("Similar: " + entry.getKey() + " -> " + entry.getValue());
-            //logger.info("Similar: file://" + entry.getKey() + " -> file://" + entry.getValue());
+            logger.info(entry.getValue());
+            //logger.info("Similar: " + entry.getKey() + " -> " + entry.getValue());
         }
     }
 
