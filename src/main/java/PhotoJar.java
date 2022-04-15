@@ -21,6 +21,10 @@ public class PhotoJar {
     public void add(Photo newPhoto) {
         BigInteger hashValue = newPhoto.getHashValue();
         if (isKeyExists(hashValue)) {
+            if (treeMap.get(hashValue).getFileSize() != newPhoto.getFileSize()) {
+                System.out.println("Something is wrong, same hash calculated for different photos");
+                System.exit(1);
+            }
             duplicates.add(newPhoto);
         }
         else {
