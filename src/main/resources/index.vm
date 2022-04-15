@@ -3,7 +3,9 @@
         table {
                 font-family: arial, sans-serif;
                 border-collapse: collapse;
-                width: 100%;
+                width: fit-content;
+                margin-left: auto;
+                margin-right: auto;
         }
 
         td, th {
@@ -14,14 +16,21 @@
 
         th {
                 text-align: center;
+                background-color: #8bdc75;
+                color: white;
         }
 
         td img {
                 display: block;
                 margin-left: auto;
                 margin-right: auto;
-
         }
+
+        img {
+                max-width: 600px;
+                max-height: 500px;
+        }
+
 </style>
 <head>
         <title>PhotoJar</title>
@@ -34,8 +43,10 @@
                 <th>VALUE</th>
         </tr>
         #foreach( $key in $similar.keySet())
-                <tr><td><img src="$key"></td><td><img src="$similar.get($key)"></td></tr>
-                <tr><td>$key</td><td>$similar.get($key)</td></tr>
+                <tr>
+                        <td><a href="$key"><img src="$key"></a></td>
+                        <td><a href="$similar.get($key)"><img src="$similar.get($key)"></a></td>
+                </tr>
         #end
 </table>
 </body></html>
