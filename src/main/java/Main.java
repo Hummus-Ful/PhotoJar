@@ -1,4 +1,3 @@
-import java.io.StringWriter;
 import java.io.Writer;
 import java.io.FileWriter;
 import java.util.Map;
@@ -19,7 +18,7 @@ public class Main {
 
     private static final String logFileName = "photojar.log";
     private static Logger logger;
-    private static String[] dirs;
+    private static String rootDir;
     private static ArrayList<Photo> photos;
     private static PhotoJar photoJar;
     private static HashMap<String, String> similar;
@@ -31,7 +30,7 @@ public class Main {
         try {
             handler = new FileHandler(logFileName);
             handler.setFormatter(new SimpleFormatter());
-            logger.setUseParentHandlers(false);  // disable outputting log to console
+            logger.setUseParentHandlers(false);  // disable console output
             logger.addHandler(handler);
         }
         catch (Exception e) {
@@ -40,15 +39,15 @@ public class Main {
     }
 
     private static void checkArgs(String[] args) {
-        if (args.length < 1) throw new IllegalArgumentException();
-        dirs = args;
+        if (args.length != 1) throw new IllegalArgumentException();
+        rootDir = args[0];
     }
 
-    private static void getAllPhotos(String dir) {
-        Scan scan = new Scan(dir);
+    private static void getAllPhotos() {
+        Scan scan = new Scan(rootDir);
         try {
             photos = scan.getAllPhotos();
-            logger.info("FOUND TOTAL OF " + photos.size() + " PHOTOS IN ROOT DIR " + dir);
+            logger.info("FOUND TOTAL OF " + photos.size() + " PHOTOS");
         }
         catch (Exception e) {
         // TODO
@@ -56,6 +55,7 @@ public class Main {
     }
 
     private static void populatePhotoJar() {
+        photoJar = new PhotoJar();
         for (Photo photo: photos) {
             photoJar.add(photo);
         }
@@ -100,14 +100,12 @@ public class Main {
     }
 
     public static void main(String[] args) {
+
         setLogger();
         checkArgs(args);
         System.out.println("Starting a scan");
-        photoJar = new PhotoJar();  //setup only once for the whole app
-        for (String dir : dirs) {
-            getAllPhotos(dir);
-            populatePhotoJar();
-        }
+        getAllPhotos();
+        populatePhotoJar();
         logAllDuplicates();
         double prePopulatedMaxDistance = 0.05;
         logAllSimilar(prePopulatedMaxDistance);
