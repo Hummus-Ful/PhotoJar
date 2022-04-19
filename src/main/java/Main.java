@@ -1,6 +1,7 @@
 import java.io.StringWriter;
 import java.io.Writer;
 import java.io.FileWriter;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -77,35 +78,17 @@ public class Main {
     }
 
     private static void createHtmlOutput() {
-        VelocityEngine velocityEngine = new VelocityEngine();
-        velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
-        velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
-        velocityEngine.setProperty("runtime.log.logsystem.class", NullLogChute.class.getName());
-        velocityEngine.init();
-
-        VelocityContext velocityContext = new VelocityContext();
-        velocityContext.put("similar", similar);
-
-        Template template = velocityEngine.getTemplate("index.vm");
-
-        try {
-            Writer writer = new FileWriter("index.html");
-            template.merge(velocityContext, writer);
-            writer.flush();
-            writer.close();
-        }
-        catch (Exception e) {
-            //TODO
-        }
+        Output.toHtml(similar, "similar.html");
     }
 
     public static void main(String[] args) {
         setLogger();
         checkArgs(args);
         System.out.println("Starting a scan");
-        photoJar = new PhotoJar();  //setup only once for the whole app
+        photoJar = new PhotoJar();
         for (String dir : dirs) {
-            getAllPhotos(dir);
+            String absolutePath = Path.of(dir).toAbsolutePath().normalize().toString();
+            getAllPhotos(absolutePath);
             populatePhotoJar();
         }
         logAllDuplicates();
