@@ -2,6 +2,7 @@ import org.junit.Test;
 import org.junit.Before;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.file.Path;
 import static org.junit.Assert.assertEquals;
 import dev.brachtendorf.jimagehash.hash.Hash;
 
@@ -39,7 +40,8 @@ public class PhotoSpecifications {
     @Test
     public void shouldReturnPhotoPath() {
         String returnedPath = photo.getPath();
-        assertEquals(path, returnedPath);
+        String expectedAbsolutePath = Path.of(path).toAbsolutePath().normalize().toString();
+        assertEquals(expectedAbsolutePath, returnedPath);
     }
 
     @Test(expected = IOException.class)
