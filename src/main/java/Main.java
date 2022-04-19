@@ -47,12 +47,6 @@ public class Main {
         }
     }
 
-    private static void populatePhotoJar() {
-        for (Photo photo: photos) {
-            photoJar.add(photo);
-        }
-    }
-
     private static void logAllDuplicates() {
         ArrayList<Photo> duplicates = photoJar.getDuplicates();
         for (Photo photo: duplicates)
@@ -80,7 +74,7 @@ public class Main {
         for (String dir : dirs) {
             String absolutePath = Path.of(dir).toAbsolutePath().normalize().toString();
             getAllPhotos(absolutePath);
-            populatePhotoJar();
+            photoJar.add(photos);
         }
         logAllDuplicates();
         double prePopulatedMaxDistance = 0.05;
