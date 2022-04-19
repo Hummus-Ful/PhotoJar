@@ -1,20 +1,10 @@
-import dev.brachtendorf.jimagehash.hash.Hash;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.Before;
-
 import java.io.File;
-import java.io.FileReader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 import java.io.IOException;
-import java.math.BigInteger;
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
 
 

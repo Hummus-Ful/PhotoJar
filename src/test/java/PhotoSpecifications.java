@@ -3,7 +3,6 @@ import org.junit.Before;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Path;
-
 import static org.junit.Assert.assertEquals;
 import dev.brachtendorf.jimagehash.hash.Hash;
 

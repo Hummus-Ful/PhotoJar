@@ -1,5 +1,3 @@
-import dev.brachtendorf.jimagehash.hash.Hash;
-
 import java.util.*;
 import java.math.BigInteger;
 
