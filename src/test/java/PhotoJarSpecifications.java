@@ -1,5 +1,7 @@
 import org.junit.Test;
 import org.junit.Before;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
 import java.io.IOException;
@@ -117,5 +119,17 @@ public class PhotoJarSpecifications {
         HashMap<String, String> similarMap = photoJar.getSimilar(similarityMaxDistance);
         boolean biggerPhotoIsTheKey = similarMap.containsKey(biggerPhoto.getPath());
         assertTrue(biggerPhotoIsTheKey);
+    }
+
+    @Test
+    public void shouldPopulatePhotoJarGivenArrayListOfPhotos() throws IOException {
+        Photo anotherPhoto = new Photo("src/test/resources/photos/Large_Robin_by_Chris-Smith.jpg");
+        ArrayList<Photo> photos = new ArrayList<>();
+        photos.add(photo);
+        photos.add(anotherPhoto);
+        photoJar.add(photos);
+        int expectedNumberOfPhotos = 2;
+        int numberOfPhotos = photoJar.getAll().size();
+        assertEquals(expectedNumberOfPhotos, numberOfPhotos);
     }
 }

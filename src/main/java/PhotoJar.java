@@ -16,14 +16,22 @@ public class PhotoJar {
         return treeMap;
     }
 
+    public void add(ArrayList<Photo> photos) {
+        for (Photo photo: photos) {
+            this.add(photo);
+        }
+    }
+
     public void add(Photo newPhoto) {
         BigInteger hashValue = newPhoto.getHashValue();
         if (isKeyExists(hashValue)) {
             if (treeMap.get(hashValue).getFileSize() != newPhoto.getFileSize()) {
-                System.out.println("Something is wrong, same hash calculated for different photos");
-                System.exit(1);
+                System.out.println("These two photos has the exact same hash but different file size." +
+                        "It is unusual and should be manually validated");
+                System.out.println("Photo1: " + treeMap.get(newPhoto.getHashValue()));
+                System.out.println("Photo2: " + newPhoto.getPath());
             }
-            duplicates.add(newPhoto);
+            else duplicates.add(newPhoto);
         }
         else {
             treeMap.put(hashValue, newPhoto);
