@@ -1,6 +1,8 @@
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.Before;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -29,13 +31,14 @@ public class PhotoJarSpecifications {
 
     @Test
     public void shouldCreateNewEmptyObject() {
-        assertTrue(photoJar.getAll().isEmpty());
+        int photoJarSize = photoJar.size();
+        assertEquals(0, photoJarSize);
     }
 
     @Test
     public void shouldAddNewEntry() {
         photoJar.add(photo);
-        int numberOfEntries = photoJar.getAll().size();
+        int numberOfEntries = photoJar.size();
         assertEquals(1, numberOfEntries);
     }
 
@@ -44,14 +47,14 @@ public class PhotoJarSpecifications {
         Photo differentPhoto = new Photo("src/test/resources/photos/Large_Robin_by_Chris-Smith.jpg");
         photoJar.add(photo);
         photoJar.add(differentPhoto);
-        int numberOfTotalEntries = photoJar.getAll().size();
+        int numberOfTotalEntries = photoJar.size();
         assertEquals(2, numberOfTotalEntries);
     }
 
     @Test
     public void shouldReturnHashMapWithAllEntries() {
         photoJar.add(photo);
-        TreeMap<BigInteger, Photo> entries = photoJar.getAll();
+        TreeMap<BigInteger, Photo> entries = photoJar.getAllPhotos();
         Collection<BigInteger> keys = entries.keySet();
         Collection<Photo> values = entries.values();
         assertTrue(keys.contains(hashValue));
@@ -129,7 +132,39 @@ public class PhotoJarSpecifications {
         photos.add(anotherPhoto);
         photoJar.add(photos);
         int expectedNumberOfPhotos = 2;
-        int numberOfPhotos = photoJar.getAll().size();
+        int numberOfPhotos = photoJar.size();
         assertEquals(expectedNumberOfPhotos, numberOfPhotos);
+    }
+
+    @Test
+    public void shouldReturnZeroAsPhotoJarIsEmpty() {
+        int size = photoJar.size();
+        assertEquals(0, size);
+    }
+
+    @Test
+    public void shouldRemovePhotoFromDuplicatesList() {
+        String path = Path.of(this.path).toAbsolutePath().normalize().toString();
+        photoJar.add(photo);
+        photoJar.add(photo);
+        int sizeBeforeExclusion = photoJar.getDuplicates().size();
+        boolean trueIfSuccessful = photoJar.excludeFromDuplicates(path);
+        int sizeAfterExclusion = photoJar.getDuplicates().size();
+        assertTrue(trueIfSuccessful);
+        assertEquals(sizeAfterExclusion, sizeBeforeExclusion-1);
+    }
+
+    @Test
+    public void shouldRemovePhotoFromSimilarList() throws IOException {
+        String path = Path.of(this.path).toAbsolutePath().normalize().toString();
+        Photo similarLargerPhoto = new Photo("src/test/resources/photos/Large_Robin_by_Chris-Smith.jpg");
+        photoJar.add(photo);
+        photoJar.add(similarLargerPhoto);
+        int sizeBeforeExclusion = photoJar.size();
+        photoJar.getSimilar(0.5);
+        boolean trueIfSuccessful = photoJar.excludeFromSimilar(path);
+        int sizeAfterExclusion = photoJar.size();
+        assertTrue(trueIfSuccessful);
+        assertEquals(sizeAfterExclusion, sizeBeforeExclusion-1);
     }
 }
