@@ -36,16 +36,16 @@
         <title>PhotoJar</title>
 </head>
 <body>
-        <h1>Similar Photos</h1>
+        <h1>Duplicate/Similar Photos</h1>
 <table>
         <tr>
                 <th>KEY</th>
                 <th>VALUE</th>
         </tr>
-        #foreach( $key in $similar.keySet())
+        #foreach( $key in $photoHashMap.keySet())
                 <tr>
-                        <td><a href="$key"><img src="$key"></a></td>
-                        <td><a href="$similar.get($key)"><img src="$similar.get($key)"></a></td>
+                        <td><a href="$key.getPath()"><img src="$key.getPath()"></a></td>
+                        <td><a href="$photoHashMap.get($key).getPath()"><img src="$photoHashMap.get($key).getPath()"></a></td>
                 </tr>
         #end
 </table>
