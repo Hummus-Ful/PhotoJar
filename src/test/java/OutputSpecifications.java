@@ -14,8 +14,8 @@ public class OutputSpecifications {
     private Photo photoB;
     private Photo photoC;
     private Photo photoD;
-    private ArrayList<Photo> photos;
-    private String duplicatesFileName = "duplicates.txt";
+    private HashMap<Photo, Photo> photos;
+    private String duplicatesFileName = "duplicates.log";
     private String similarFileName = "similar.html";
     File duplicatesFile;
     File similarFile;
@@ -26,10 +26,9 @@ public class OutputSpecifications {
         photoB = new Photo("src/test/resources/photos/Large_Robin_by_Chris-Smith.jpg");
         photoC = new Photo("src/test/resources/photos/Small_Robin_by_abdul-rehman-khalid.jpg");
         photoD = new Photo("src/test/resources/photos/Large_Robin_by_abdul-rehman-khalid.jpg");
-        photos = new ArrayList<>();
-        photos.add(photoA);
-        photos.add(photoB);
-        photos.add(photoC);
+        photos = new HashMap<>();
+        photos.put(photoA, photoB);
+        photos.put(photoC, photoD);
         duplicatesFile = new File(duplicatesFileName);
         similarFile = new File(similarFileName);
     }
@@ -41,9 +40,9 @@ public class OutputSpecifications {
     }
 
     @Test
-    public void shouldOutputArrayListToNewPlainTxtFile() throws Exception{
+    public void shouldOutputEntriesToNewPlainTxtFile() throws IOException {
         List<String> paths = new ArrayList<>();
-        for (Photo photo : photos) {
+        for (Photo photo : photos.keySet()) {
             paths.add(photo.getPath());
         }
         Output.toPlainText(photos, duplicatesFileName);
@@ -52,15 +51,15 @@ public class OutputSpecifications {
     }
 
     @Test
-    public void shouldAppendOutputArrayListToExistingPlainTxtFile() throws Exception{
+    public void shouldAppendNewEntriesToExistingPlainTxtFile() throws IOException {
         Output.toPlainText(photos, duplicatesFileName);
-        ArrayList<Photo> additionalPhotos = new ArrayList<>();
-        additionalPhotos.add(photoD);
+        HashMap<Photo, Photo> additionalPhotos = new HashMap<>();
+        additionalPhotos.put(photoB, photoA);
         List<String> paths = new ArrayList<>();
-        for (Photo photo : photos) {
+        for (Photo photo : photos.keySet()) {
             paths.add(photo.getPath());
         }
-        paths.add(photoD.getPath());
+        paths.add(photoB.getPath());
         Output.toPlainText(additionalPhotos, duplicatesFileName);
         List<String> lines = Files.readAllLines(duplicatesFile.toPath());
         assertEquals(paths, lines);
@@ -68,14 +67,13 @@ public class OutputSpecifications {
 
     @Test
     public void shouldOutputHashMapToHtmlFile() {
-        HashMap<String, String> photosHashMap = new HashMap<>();
-        photosHashMap.put(photoA.getPath(), photoB.getPath());
-        photosHashMap.put(photoC.getPath(), photoD.getPath());
+        HashMap<Photo, Photo> photosHashMap = new HashMap<>();
+        photosHashMap.put(photoA, photoB);
+        photosHashMap.put(photoC, photoD);
         Output.toHtml(photosHashMap, similarFileName);
         File ref = new File("src/test/resources/reference.html");
         assertEquals(ref.getTotalSpace(), similarFile.getTotalSpace());  //TODO
     }
-
 }
 
 //TODO:
