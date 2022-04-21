@@ -5,13 +5,13 @@ import java.math.BigInteger;
 public class PhotoJar {
 
     private TreeMap<BigInteger, Photo> jar;
-    private ArrayList<Photo> duplicates;
+    private HashMap<Photo, Photo> duplicates;
 
-    private HashMap<String, String> similar;
+    private HashMap<Photo, Photo> similar;
 
     public PhotoJar() {
         jar = new TreeMap<>();
-        duplicates = new ArrayList<>();
+        duplicates = new HashMap<>();
         similar = new HashMap<>();
     }
 
@@ -32,13 +32,14 @@ public class PhotoJar {
     public void add(Photo newPhoto) {
         BigInteger hashValue = newPhoto.getHashValue();
         if (isKeyExists(hashValue)) {
-            if (jar.get(hashValue).getFileSize() != newPhoto.getFileSize()) {
-                System.out.println("These two photos has the exact same hash but different file size." +
+            Photo existingPhoto = jar.get(hashValue);
+            if (existingPhoto.getFileSize() != newPhoto.getFileSize()) {
+                System.out.println("These two photos have the exact same hash but different file size. " +
                         "It is unusual and should be manually validated");
-                System.out.println("Photo1: " + jar.get(newPhoto.getHashValue()));
+                System.out.println("Photo1: " + existingPhoto.getPath());
                 System.out.println("Photo2: " + newPhoto.getPath());
             }
-            else duplicates.add(newPhoto);
+            else duplicates.put(newPhoto, existingPhoto);  //in this order as key must be unique
         }
         else {
             jar.put(hashValue, newPhoto);
@@ -53,11 +54,11 @@ public class PhotoJar {
         return jar.get(hashValue);
     }
 
-    public ArrayList<Photo> getDuplicates() {
+    public HashMap<Photo, Photo> getDuplicates() {
         return duplicates;
     }
 
-    public HashMap<String, String > getSimilar(double maxDistance) {
+    public HashMap<Photo, Photo > getSimilar(double maxDistance) {
         ArrayList<Photo> photos = new ArrayList<>(jar.values());
         for (int iterator = 0; iterator < (photos.size()-1); iterator++) {
             Photo photoA = photos.get(iterator);
@@ -65,17 +66,17 @@ public class PhotoJar {
             double distanceBetweenPhotos = photoA.getHash().normalizedHammingDistance(photoB.getHash());
             if (distanceBetweenPhotos < maxDistance) {
                 // ensure the bigger photo is saved as Map key
-                if (photoA.getFileSize() > photoB.getFileSize()) similar.put(photoA.getPath(), photoB.getPath());
-                else similar.put(photoB.getPath(), photoA.getPath());
+                if (photoA.getFileSize() > photoB.getFileSize()) similar.put(photoA, photoB);
+                else similar.put(photoB, photoA);
             }
         }
         return similar;
     }
 
     public boolean excludeFromDuplicates(String path) {
-        for(int index=0; index<duplicates.size(); index++) {
-            if(duplicates.get(index).getPath().equals(path)) {
-                duplicates.remove(index);
+        for(Photo photo : duplicates.keySet()) {
+            if(photo.getPath().equals(path)){
+                duplicates.remove(photo);
                 return true;
             }
         }

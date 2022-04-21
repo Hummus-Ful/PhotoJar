@@ -36,11 +36,11 @@
         <title>PhotoJar</title>
 </head>
 <body>
-        <h1>Duplicate/Similar Photos</h1>
+        <h1>Similar Photos</h1>
 <table>
         <tr>
-                <th>KEY</th>
-                <th>VALUE</th>
+                <th>ORIGIN</th>
+                <th>SIMILAR</th>
         </tr>
         #foreach( $key in $photoHashMap.keySet())
                 <tr>

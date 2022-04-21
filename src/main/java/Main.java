@@ -14,7 +14,8 @@ public class Main {
     private static String[] dirs;
     private static ArrayList<Photo> photos;
     private static PhotoJar photoJar;
-    private static HashMap<String, String> similar;
+    private static HashMap<Photo, Photo> similar;
+    private static HashMap<Photo, Photo> duplicates;
 
 
     private static void setLogger() {
@@ -48,22 +49,22 @@ public class Main {
     }
 
     private static void logAllDuplicates() {
-        ArrayList<Photo> duplicates = photoJar.getDuplicates();
-        for (Photo photo: duplicates)
+        duplicates = photoJar.getDuplicates();
+        for (Photo photo: duplicates.keySet())
             logger.info(photo.getPath());
-            //logger.info("Duplicate: " + photo.getHashValue() + ", Path: " + photo.getPath());
     }
 
     private static void logAllSimilar(double maxDistance) {
         similar = photoJar.getSimilar(maxDistance);
-        for (Map.Entry<String, String > entry: similar.entrySet()) {
-            logger.info(entry.getValue());
-            //logger.info("Similar: " + entry.getKey() + " -> " + entry.getValue());
+        for (Photo photo : similar.values()) {
+            logger.info(photo.getPath());
         }
     }
 
-    private static void createHtmlOutput() {
+    private static void outputToFiles() {
         Output.toHtml(similar, "similar.html");
+        Output.toHtml(duplicates, "duplicates.html");
+        Output.toPlainText(duplicates, "duplicates.log");
     }
 
     public static void main(String[] args) {
@@ -76,11 +77,10 @@ public class Main {
             getAllPhotos(absolutePath);
             photoJar.add(photos);
         }
-        logAllDuplicates();
         double prePopulatedMaxDistance = 0.05;
         logAllSimilar(prePopulatedMaxDistance);
-        createHtmlOutput();
+        logAllDuplicates();
+        outputToFiles();
         System.out.println("Done!");
     }
 }
-

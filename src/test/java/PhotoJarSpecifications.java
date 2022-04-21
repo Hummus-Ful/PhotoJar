@@ -108,7 +108,7 @@ public class PhotoJarSpecifications {
         photoJar.add(robinPhoto);
         photoJar.add(similarRobinPhoto);
         double similarityMaxDistance = 0.05;
-        HashMap<String, String> similarMap = photoJar.getSimilar(similarityMaxDistance);
+        HashMap<Photo, Photo> similarMap = photoJar.getSimilar(similarityMaxDistance);
         int numberOfSimilarPairs = similarMap.size();
         assertEquals(2, numberOfSimilarPairs);
     }
@@ -119,8 +119,8 @@ public class PhotoJarSpecifications {
         photoJar.add(photo);
         photoJar.add(biggerPhoto);
         double similarityMaxDistance = 0.05;
-        HashMap<String, String> similarMap = photoJar.getSimilar(similarityMaxDistance);
-        boolean biggerPhotoIsTheKey = similarMap.containsKey(biggerPhoto.getPath());
+        HashMap<Photo, Photo> similarMap = photoJar.getSimilar(similarityMaxDistance);
+        boolean biggerPhotoIsTheKey = similarMap.containsKey(biggerPhoto);
         assertTrue(biggerPhotoIsTheKey);
     }
 
