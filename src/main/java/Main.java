@@ -1,5 +1,4 @@
 import java.nio.file.Path;
-import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -48,22 +47,10 @@ public class Main {
         }
     }
 
-    private static void logAllDuplicates() {
-        duplicates = photoJar.getDuplicates();
-        for (Photo photo: duplicates.keySet())
-            logger.info(photo.getPath());
-    }
-
-    private static void logAllSimilar(double maxDistance) {
-        similar = photoJar.getSimilar(maxDistance);
-        for (Photo photo : similar.values()) {
-            logger.info(photo.getPath());
-        }
-    }
-
     private static void outputToFiles() {
         Output.toHtml(similar, "similar.html");
         Output.toHtml(duplicates, "duplicates.html");
+        Output.toPlainText(similar, "similar.log");
         Output.toPlainText(duplicates, "duplicates.log");
     }
 
@@ -78,8 +65,8 @@ public class Main {
             photoJar.add(photos);
         }
         double prePopulatedMaxDistance = 0.05;
-        logAllSimilar(prePopulatedMaxDistance);
-        logAllDuplicates();
+        duplicates = photoJar.getDuplicates();
+        similar = photoJar.getSimilar(prePopulatedMaxDistance);
         outputToFiles();
         System.out.println("Done!");
     }

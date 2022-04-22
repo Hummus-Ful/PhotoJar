@@ -114,14 +114,14 @@ public class PhotoJarSpecifications {
     }
 
     @Test
-    public void shouldReturnBiggerPhotoAsMapKeyAndSmallerAsValue() throws IOException {
+    public void shouldReturnBiggerPhotoAsMapValueAndSmallerAsKey() throws IOException {
         Photo biggerPhoto = new Photo("src/test/resources/photos/Large_Robin_by_Chris-Smith.jpg");
         photoJar.add(photo);
         photoJar.add(biggerPhoto);
         double similarityMaxDistance = 0.05;
         HashMap<Photo, Photo> similarMap = photoJar.getSimilar(similarityMaxDistance);
-        boolean biggerPhotoIsTheKey = similarMap.containsKey(biggerPhoto);
-        assertTrue(biggerPhotoIsTheKey);
+        boolean biggerPhotoIsTheValue = similarMap.containsValue(biggerPhoto);
+        assertTrue(biggerPhotoIsTheValue);
     }
 
     @Test

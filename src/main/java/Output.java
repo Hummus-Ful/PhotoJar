@@ -5,10 +5,9 @@ import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.log.NullLogChute;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
-import java.util.Locale;
+
 
 public class Output {
 
@@ -46,7 +45,7 @@ public class Output {
         fileName = validateLogExtension(fileName);
         try {
             FileWriter fileWriter = new FileWriter(fileName, true);
-            for (Photo photo : photoHashMap.keySet()) {  //keys are the duplicates, values are the origins
+            for (Photo photo : photoHashMap.keySet()) {
                 fileWriter.write(photo.getPath() + "\n");
             }
             fileWriter.close();
