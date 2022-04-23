@@ -55,4 +55,12 @@ public class PhotoSpecifications {
         long fileSize = photo.getFileSize();
         assertEquals(86950, fileSize);
     }
+
+    @Test
+    public void shouldReturnPhotoDimensions() {
+        int photoWidth = photo.getWidth();
+        int photoHeight = photo.getHeight();
+        assertEquals(640, photoWidth);
+        assertEquals(640, photoHeight);
+    }
 }

@@ -44,8 +44,12 @@
         </tr>
         #foreach( $key in $photoHashMap.keySet())
                 <tr>
+                        <td>File Size: $photoHashMap.get($key).getFileSize()kb<br>Width: $photoHashMap.get($key).getWidth()<br>Height: $photoHashMap.get($key).getHeight()</td>
                         <td><a href="$photoHashMap.get($key).getPath()"><img src="$photoHashMap.get($key).getPath()"></a></td>
+                        <td>File Size: $photoHashMap.get($key).getFileSize()kb<br>Width: $photoHashMap.get($key).getWidth()<br>Height: $photoHashMap.get($key).getHeight()</td>
+                        <td>File Size: $key.getFileSize()kb<br>Width: $key.getWidth()<br>Height: $key.getHeight()</td>
                         <td><a href="$key.getPath()"><img src="$key.getPath()"></a></td>
+                        <td>File Size: $key.getFileSize()kb<br>Width: $key.getWidth()<br>Height: $key.getHeight()</td>
                 </tr>
         #end
 </table>

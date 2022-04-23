@@ -1,3 +1,4 @@
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -6,6 +7,8 @@ import dev.brachtendorf.jimagehash.hash.Hash;
 import dev.brachtendorf.jimagehash.hashAlgorithms.AverageHash;
 import dev.brachtendorf.jimagehash.hashAlgorithms.HashingAlgorithm;
 
+import javax.imageio.ImageIO;
+
 
 public class Photo {
 
@@ -13,6 +16,8 @@ public class Photo {
     private String path;
     private Hash hash;
     private long fileSize;
+    private int width;
+    private int height;
     private BigInteger hashValue;
     private HashingAlgorithm hashingAlgorithm;
     private int keyLength = 128;
@@ -35,6 +40,12 @@ public class Photo {
         fileSize = file.length();
     }
 
+    private void setPhotoDimensions() throws IOException{
+        BufferedImage bufferedImage = ImageIO.read(file);
+        width = bufferedImage.getWidth();
+        height = bufferedImage.getHeight();
+    }
+
     public Photo() {
         throw new IllegalArgumentException();
     }
@@ -45,6 +56,7 @@ public class Photo {
         setHash();
         setHashValue();
         setFileSize();
+        setPhotoDimensions();
     }
 
     public Hash getHash() {
@@ -61,6 +73,14 @@ public class Photo {
 
     public long getFileSize() {
         return fileSize;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     @Override
