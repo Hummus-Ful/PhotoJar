@@ -46,10 +46,10 @@
         </tr>
         #foreach( $key in $photoHashMap.keySet())
                 <tr>
-                        <td><img src="$photoHashMap.get($key).getPath()" onclick="copyToClipboard(this.src)" onmouseout="outFunc()"><span class="tooltiptext" id="myTooltip">Copy path to clipboard</span></td>
+                        <td><img src="$photoHashMap.get($key).getPath()" onclick="copyToClipboard(this.src)" onmouseout="outFunc()"></td>
                         <td>File Size: $photoHashMap.get($key).getFileSize()kb<br>Width: $photoHashMap.get($key).getWidth()<br>Height: $photoHashMap.get($key).getHeight()</td>
                         <td>File Size: $key.getFileSize()kb<br>Width: $key.getWidth()<br>Height: $key.getHeight()</td>
-                        <td><img src="$key.getPath()" onclick="copyToClipboard(this.src)" onmouseout="outFunc()"><span class="tooltiptext" id="myTooltip">Copy path to clipboard</span></td>
+                        <td><img src="$key.getPath()" onclick="copyToClipboard(this.src)" onmouseout="outFunc()"></td>
                 </tr>
         #end
 </table>
