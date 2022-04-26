@@ -1,3 +1,4 @@
+import java.io.*;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class Main {
     private static PhotoJar photoJar;
     private static HashMap<Photo, Photo> similar;
     private static HashMap<Photo, Photo> duplicates;
+    private static String persistentJarFilePath = "persistentJarFile";
 
 
     private static void setLogger() {
@@ -54,11 +56,39 @@ public class Main {
         Output.toPlainText(duplicates, "duplicates.log");
     }
 
+    private static void populateJarFromFile(File jar) {
+        try {
+            FileInputStream fileInputStream = new FileInputStream(jar);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            photoJar = (PhotoJar) objectInputStream.readObject();
+            objectInputStream.close();
+        }
+        catch (Exception e) {
+            photoJar = new PhotoJar();
+        }
+    }
+
+    private static void populateJarToFile() {
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(persistentJarFilePath);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(photoJar);
+            objectOutputStream.flush();
+            objectOutputStream.close();
+            System.out.println("Jar successfully written to file");
+        }
+        catch (Exception e) {
+            System.out.println("Exception was raised while writing jar to file: " + e);
+        }
+    }
+
     public static void main(String[] args) {
         setLogger();
         checkArgs(args);
         System.out.println("Starting a scan");
-        photoJar = new PhotoJar();
+        File JarFile = new File(persistentJarFilePath);
+        if (JarFile.exists()) populateJarFromFile(JarFile);
+        else photoJar = new PhotoJar();
         for (String dir : dirs) {
             String absolutePath = Path.of(dir).toAbsolutePath().normalize().toString();
             getAllPhotos(absolutePath);
@@ -68,6 +98,7 @@ public class Main {
         duplicates = photoJar.getDuplicates();
         similar = photoJar.getSimilar(prePopulatedMaxDistance);
         outputToFiles();
+        populateJarToFile();
         System.out.println("Done!");
     }
 }
