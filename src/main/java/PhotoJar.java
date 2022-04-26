@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.util.*;
 import java.math.BigInteger;
 
 
-public class PhotoJar {
+public class PhotoJar implements Serializable {
 
     private TreeMap<BigInteger, Photo> jar;
     private HashMap<Photo, Photo> duplicates;

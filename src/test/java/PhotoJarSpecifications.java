@@ -1,12 +1,13 @@
+import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.Before;
 
+import java.io.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
-import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Collection;
 import static org.junit.Assert.assertTrue;
@@ -20,6 +21,7 @@ public class PhotoJarSpecifications {
     private String path;
     private BigInteger hashValue;
     private Photo photo;
+    private String persistentJarFile = "jar";
 
     @Before
     public void setup() throws IOException {
@@ -27,6 +29,12 @@ public class PhotoJarSpecifications {
         path = "src/test/resources/photos/Small_Robin_by_Chris-Smith.jpg";
         hashValue = new BigInteger("3255819928745283004853448844850788827905");
         photo = new Photo(path);
+    }
+
+    @After
+    public void teardown() {
+        File jar = new File(persistentJarFile);
+        jar.delete();
     }
 
     @Test
@@ -166,5 +174,23 @@ public class PhotoJarSpecifications {
         int sizeAfterExclusion = photoJar.size();
         assertTrue(trueIfSuccessful);
         assertEquals(sizeAfterExclusion, sizeBeforeExclusion-1);
+    }
+
+    @Test
+    public void shouldImplementSerializable() throws IOException, ClassNotFoundException {
+        persistentJarFile = "jar";
+        photoJar.add(photo);
+        FileOutputStream fileOutputStream = new FileOutputStream(persistentJarFile);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        objectOutputStream.writeObject(photoJar);
+        objectOutputStream.flush();
+        objectOutputStream.close();
+
+        FileInputStream fileInputStream = new FileInputStream(persistentJarFile);
+        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+        PhotoJar newJar = (PhotoJar) objectInputStream.readObject();
+        objectInputStream.close();
+
+        assertEquals(photoJar.size(), newJar.size());
     }
 }

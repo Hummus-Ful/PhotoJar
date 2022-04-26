@@ -1,6 +1,7 @@
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.nio.file.Path;
 import dev.brachtendorf.jimagehash.hash.Hash;
@@ -10,7 +11,7 @@ import dev.brachtendorf.jimagehash.hashAlgorithms.HashingAlgorithm;
 import javax.imageio.ImageIO;
 
 
-public class Photo {
+public class Photo implements Serializable {
 
     private File file;
     private String path;
