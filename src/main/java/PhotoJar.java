@@ -1,35 +1,59 @@
-import java.io.Serializable;
 import java.util.*;
 import java.math.BigInteger;
+import java.io.Serializable;
 
 
+/**
+ * As the name suggests, simple Jar of photos where you can search for duplicates or similar ones and get
+ * all the relevant data for each (path, size on disk, dimensions)
+ *
+ * @author Hummus-ful
+ */
 public class PhotoJar implements Serializable {
 
     private TreeMap<BigInteger, Photo> jar;
     private HashMap<Photo, Photo> duplicates;
-
     private HashMap<Photo, Photo> similar;
 
+    /**
+     * Create new jar, duplicates and similar objects
+     */
     public PhotoJar() {
         jar = new TreeMap<>();
         duplicates = new HashMap<>();
         similar = new HashMap<>();
     }
 
+    /**
+     * Return map of all photos in jar.
+     * @return TreeMap of all photos in jar.
+     */
     public TreeMap<BigInteger, Photo> getAllPhotos() {
         return jar;
     }
 
+    /**
+     * Returns the number of photos in jar.
+     * @return number of photos in jar.
+     */
     public int size() {
         return jar.size();
     }
 
+    /**
+     * Add multiple new photos to jar.
+     * @param photos Photos to be added.
+     */
     public void add(ArrayList<Photo> photos) {
         for (Photo photo: photos) {
             this.add(photo);
         }
     }
 
+    /**
+     * Add single new photo to the jar.
+     * @param newPhoto The photo to be added.
+     */
     public void add(Photo newPhoto) {
         BigInteger hashValue = newPhoto.getHashValue();
         if (isKeyExists(hashValue)) {
@@ -47,6 +71,11 @@ public class PhotoJar implements Serializable {
         }
     }
 
+    /**
+     * Test if given hashValue is found in the jar.
+     * @param hashValue Photo hash value.
+     * @return True if hashValue exists in the jar.
+     */
     public boolean isKeyExists(BigInteger hashValue) {
         return jar.containsKey(hashValue);
     }
